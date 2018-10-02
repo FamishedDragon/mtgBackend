@@ -1,6 +1,8 @@
 const express = require('express')
 const Joi = require('joi')
 const mongoose = require('mongoose')
+import {httpCode} from "../util/constants";
+
 const router = express.Router()
 
 var cards = [
@@ -53,7 +55,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const { error } = validateCard(req.body)
     if (error) {
-        return res.status(400).send(error.details[0].message)
+        return res.status(httpCode.error).send(error.details[0].message)
     }
 
     const newCard = {
@@ -68,11 +70,11 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     const card = cards.find(c => c.id === parseInt(req.params.id))
     if (!card) {
-        return res.status(404).send(`ERROR: Card with ID ${req.params.id} does not exist`)
+        return res.status(httpCode.doesNotExist).send(`ERROR: Card with ID ${req.params.id} does not exist`)
     }
     const { error } = validateCard(req.body)
     if (error) {
-        return res.status(400).send(error.details[0].message)
+        return res.status(httpCode.error).send(error.details[0].message)
     }
 
     card.name = req.body.name
@@ -83,7 +85,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
     const card = cards.find(c => c.id === parseInt(req.params.id))
     if (!card) {
-        return res.status(404).send(`ERROR: Card with ID ${req.params.id} does not exist`)
+        return res.status(httpCode.doesNotExist).send(`ERROR: Card with ID ${req.params.id} does not exist`)
     }
 
     const index = cards.indexOf(card)
@@ -100,7 +102,7 @@ router.get('/:id', (req, res) => {
         res.send(card)
     }
     else {
-        return res.status(404).send(`ERROR: Card with ID ${req.params.id} does not exist`)
+        return res.status(httpCode.doesNotExist).send(`ERROR: Card with ID ${req.params.id} does not exist`)
     }
 })
 

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Joi = require('joi')
+import {httpCode} from "../util/constants";
 
 const setSchema = {
     id: Joi.number(),
@@ -31,7 +32,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     const {error} = validateSets(req.body)
     if (error) {
-        res.status(400).send(error.details[0].message)
+        res.status(httpCode.error).send(error.details[0].message)
     }
 
     const newSet = {
@@ -45,26 +46,26 @@ router.post('/', (req, res) => {
     res.send(sets)
 })
 
-// Modify existing card
+// Modify existing set
 router.put('/:id', (req, res) => {
-    const card = cards.find(c => c.id === parseInt(req.params.id))
-    if (!card) {
-        return res.status(404).send(`ERROR: Card with ID ${req.params.id} does not exist`)
+    const set = sets.find(c => c.id === parseInt(req.params.id))
+    if (!set) {
+        return res.status(httpCode.doesNotExist).send(`ERROR: Set with ID ${req.params.id} does not exist`)
     }
-    const { error } = validateCard(req.body)
+    const { error } = validateSets(req.body)
     if (error) {
-        return res.status(400).send(error.details[0].message)
+        return res.status(httpCode.error).send(error.details[0].message)
     }
 
-    card.name = req.body.name
-    res.send(card)
+    set.name = req.body.name
+    res.send(set)
 })
 
 // DELETE by ID
 router.delete('/:id', (req, res) => {
     const set = sets.find(s => s.id === parseInt(sets.params.id))
     if (!set) {
-        return res.status(404).send(`ERROR: Set with ID ${sets.params.id} does not exist`)
+        return res.status(httpCode.doesNotExist).send(`ERROR: Set with ID ${sets.params.id} does not exist`)
     }
 
     const index = sets.indexOf(set)
@@ -79,7 +80,7 @@ router.get('/:id', (req, res) => {
         res.send(set)
     }
     else {
-        return res.status(404).send(`ERROR: Card with ID ${req.params.id} does not exist`)
+        return res.status(httpCode.doesNotExist).send(`ERROR: Card with ID ${req.params.id} does not exist`)
     }
 })
 
