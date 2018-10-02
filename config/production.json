@@ -1,0 +1,6 @@
+{
+  "name":"MTG Backend Engine - Production",
+  "mail":{
+    "host":"mail-prod"
+  }
+}

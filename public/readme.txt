@@ -1,0 +1,1 @@
+This is a read me file to test serving of static content
