@@ -92,6 +92,18 @@ async function getCards() {
     console.log(allCards)
 }
 
+async function getCardByFilter() {
+    let pageNumber = 2
+    let pageSize = 10
+    const cards = await Card
+        .find({power: 1})
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .sort({name: 1})
+        .select({name: 1, tags: 1})
+}
+
+// Querry first update method
 async function updateCard(id) {
     const card = Card.findByID(id)
     if (!card) {
@@ -99,7 +111,24 @@ async function updateCard(id) {
         return
     }
 
+    card.setID = 2
+    const result = Card.save()
+    console.log(result)
+}
+
+// Update from DB update method
+async function updateCardInDB(id) {
+    // Can update multiple entries at once with the object passed in
+    // Card.update({set: 1}) -> Updates all cards with set ID 1
+    const result = Card.update({_id: id},{
+        $set: {
+            cardType: 'Spell',
+            power: null,
+            toughness: null
+        }
+    })
     
+    console.log(result)
 }
 getCards()
 
