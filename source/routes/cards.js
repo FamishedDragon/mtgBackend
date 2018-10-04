@@ -1,54 +1,13 @@
-const express = require('express')
-const Joi = require('joi')
-const mongoose = require('mongoose')
 import {httpCode} from "../util/constants";
-
+import {getCards, validateCard} from "../actions/cardActions";
+const express = require('express')
+const mongoose = require('mongoose')
 const router = express.Router()
 
-var cards = [
-    {id: 1, name: 'cardOne'},
-    {id: 2, name: 'cardTwo'},
-    {id: 3, name: 'cardThree'}
-]
-// const cardSchema = {
-//     id: Joi.number(),
-//     name: Joi.string().min(3).required()
-// }
-
-const cardSchema = new mongoose.Schema({
-    name: String,
-    setID: Number,
-    power: Number,
-    toughness: Number,
-    cardType: String,
-    subType: String,
-    tags: [ String ]
-})
-
-//const Card = mongoose.model('Card', cardSchema)
-
-// async function createCard () {
-//     const card = new Card({
-//         name: 'Lightning Bolt',
-//         setID: 1,
-//         power: null,
-//         toughness: null,
-//         cardType: 'Instant',
-//         subType: null,
-//         tags: [ 'Burn' ]
-//     })
-//
-//     const result = await card.save()
-//     console.log('Result', result)
-// }
-
-function validateCard(card) {
-    return Joi.validate(card, cardSchema)
-}
-
+// region API
 // GET all cards
 router.get('/', (req, res) => {
-    res.send(cards)
+    getCards().then(response => res.send(response))
 })
 
 // POST add new card
@@ -105,5 +64,6 @@ router.get('/:id', (req, res) => {
         return res.status(httpCode.doesNotExist).send(`ERROR: Card with ID ${req.params.id} does not exist`)
     }
 })
+//endregion
 
 module.exports = router;
