@@ -2,7 +2,7 @@ const Joi = require('joi')
 const mongoose = require('mongoose')
 
 const cardSchema = new mongoose.Schema({
-    name: String,
+    name: {type: String, required: true},
     setID: Number,
     power: Number,
     toughness: Number,
@@ -24,12 +24,19 @@ export async function createCard (card) {
     //     tags: [ 'Burn' ]
     // })
 
-    if (!validateCard(card)) {
-        return
-    }
+    // Validation is automatic when Mongoose trys to save to database
+    // Will throw an exception
+    // if (!validateCard(card)) {
+    //     return
+    // }
 
-    const result = await card.save()
-    console.log('Result', result)
+    try {
+        const result = await card.save()
+        console.log('Result', result)
+    }
+    catch(ex) {
+        console.log('ERROR:', ex.message)
+    }
 }
 
 export function testFunc() {
@@ -78,6 +85,7 @@ export async function updateCard(id) {
 export async function updateCardInDB(id) {
     // Can update multiple entries at once with the object passed in
     // Card.update({set: 1}) -> Updates all cards with set ID 1
+    // if you want to return what you update, use Card.findByIdAndUpdate(id, {$set}, {new: true})
     const result = Card.update({_id: id},{
         $set: {
             cardType: 'Spell',
@@ -85,6 +93,15 @@ export async function updateCardInDB(id) {
             toughness: null
         }
     })
+
+    console.log(result)
+}
+
+export async function removeCard(id) {
+    // Can update multiple entries at once with the object passed in
+    // Card.update({set: 1}) -> Updates all cards with set ID 1
+    // if you want to return what you update, use Card.findByIdAndUpdate(id, {$set}, {new: true})
+    const result = Card.deleteOne({_id: id})
 
     console.log(result)
 }

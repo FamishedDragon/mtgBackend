@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const router = express.Router()
 
 // region API
+// base URI = /api/cards
 // GET all cards
 router.get('/', (req, res) => {
     getCards().then(response => res.send(response))
@@ -48,7 +49,6 @@ router.delete('/:id', (req, res) => {
     }
 
     const index = cards.indexOf(card)
-
     cards.splice(index, 1)
 
     res.send(cards)
