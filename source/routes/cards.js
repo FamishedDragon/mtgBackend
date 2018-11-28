@@ -1,7 +1,7 @@
 import {httpCode} from "../util/constants";
 import {getCards, validateCard} from "../actions/cardActions";
-const express = require('express')
-const mongoose = require('mongoose')
+import express from'express'
+import mongoose from'mongoose'
 const router = express.Router()
 
 // region API
@@ -66,4 +66,4 @@ router.get('/:id', (req, res) => {
 })
 //endregion
 
-module.exports = router;
+export default router;

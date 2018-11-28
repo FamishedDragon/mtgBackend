@@ -1,5 +1,5 @@
-const Joi = require('joi')
-const mongoose = require('mongoose')
+import Joi from'joi'
+import mongoose from'mongoose'
 
 const setSchema = new mongoose.Schema({
     name: String,

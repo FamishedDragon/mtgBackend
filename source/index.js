@@ -1,15 +1,15 @@
-const helmet = require('helmet')
-const morgan = require('morgan')
-const config = require('config')
-const mongoose = require('mongoose')
-const startupDebugger = require('debug')('router:startup')
-const dbDebugger = require('debug')('router:db')
-const express = require('express')
-const logger = require('./middleware/logger')
-const cards = require('./routes/cards')
-const sets = require('./routes/sets')
+import helmet from 'helmet'
+import morgan from'morgan'
+import config from 'config'
+import mongoose from 'mongoose'
+import express from 'express'
+import logger from './middleware/logger'
+import cards from'./routes/cards'
+import sets from './routes/sets'
 import {getCards, testFunc} from "./actions/cardActions";
 
+const startupDebugger = require('debug')('router:startup')
+const dbDebugger = require('debug')('router:db')
 const app = express()
 
 mongoose.connect('mongodb://localhost/mtgdb')

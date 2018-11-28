@@ -1,8 +1,9 @@
-const express = require('express')
-const router = express.Router()
-const Joi = require('joi')
+import express from'express'
+import Joi from 'joi'
 import {httpCode} from "../util/constants";
 import {getSets, updateSetInDB, validateSets} from "../actions/setsActions";
+
+const router = express.Router()
 
 // const setSchema = {
 //     id: Joi.number(),
@@ -97,4 +98,4 @@ router.get('/:id', (req, res) => {
         })
 })
 
-module.exports = router;
+export default router;
